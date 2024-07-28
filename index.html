@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upper Extremity Impairment Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Upper Extremity Impairment Calculator</h1>
+        <div class="card-container" id="cardContainer"></div>
+        <button id="calculate">Calculate Impairment</button>
+        <div id="result"></div>
+        <div class="options-container" id="optionsContainer" style="display: none;">
+            <h2 id="currentCardTitle"></h2>
+            <div id="optionsList"></div>
+            <button id="nextCard">Next</button>
+        </div>
+        <div class="calculators-container" id="calculatorsContainer" style="display: none;">
+            <h2>Impairment Calculators</h2>
+            <div id="calculatorsList"></div>
+            <div class="calculator-card">
+                <h3>Total Impairment</h3>
+                <div id="totalImpairment"></div>
+            </div>
+            <button id="finalizeImpairment">Finalize Impairment</button>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="utils.js"></script>
+    <script src="shoulder.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
