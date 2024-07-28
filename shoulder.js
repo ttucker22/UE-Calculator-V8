@@ -1,11 +1,34 @@
-function calculateShoulderROM() {
-    console.log("Calculating Shoulder ROM");
-    updateShoulderImpairment();
-    updateTotalImpairment();
+// Revised shoulder.js
+
+function setupShoulderCalculators() {
+    if (selectedOptions.shoulder && selectedOptions.shoulder.includes('ROM')) {
+        setupShoulderROM();
+    }
+    if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Strength')) {
+        setupShoulderStrength();
+    }
+    if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Arthroplasty')) {
+        setupShoulderArthroplasty();
+    }
+    if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Instability/Subluxation/Dislocation')) {
+        setupShoulderInstability();
+    }
+    if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Synovial Hypertrophy')) {
+        setupShoulderSynovialHypertrophy();
+    }
 }
 
-function updateShoulderImpairment() {
-    console.log("Updating Shoulder Impairment");
+function setupShoulderROM() {
+    const shoulderInputs = ['flexion', 'extension', 'abduction', 'adduction', 'internal-rotation', 'external-rotation', 'ankylosis-fe', 'ankylosis-aa', 'ankylosis-ie'];
+    shoulderInputs.forEach(input => {
+        const element = document.getElementById(`shoulder-${input}`);
+        if (element) {
+            element.addEventListener('input', calculateShoulderROM);
+        }
+    });
+}
+
+function calculateShoulderROM() {
     const movements = [
         { name: 'flexion', dataArray: SHOULDERFlexionExtensionData, group: 'fe' },
         { name: 'extension', dataArray: SHOULDERFlexionExtensionData, group: 'fe' },
@@ -66,6 +89,22 @@ function updateShoulderImpairment() {
 
     document.getElementById('shoulder-rom-total').textContent = totalImp;
     document.getElementById('shoulder-rom-wpi').textContent = wpi;
+
+    updateTotalImpairment();
+}
+
+function setupShoulderStrength() {
+    const movements = ['flexion', 'extension', 'abduction', 'adduction', 'internal-rotation', 'external-rotation'];
+    movements.forEach(movement => {
+        const deficitElement = document.getElementById(`shoulder-${movement}-strength-deficit`);
+        const impElement = document.getElementById(`shoulder-${movement}-strength-imp`);
+        if (deficitElement) {
+            deficitElement.addEventListener('input', () => calculateShoulderStrength(movement, 'deficit'));
+        }
+        if (impElement) {
+            impElement.addEventListener('input', () => calculateShoulderStrength(movement, 'imp'));
+        }
+    });
 }
 
 function calculateShoulderStrength(movement, inputType) {
@@ -86,7 +125,6 @@ function calculateShoulderStrength(movement, inputType) {
     }
 
     updateTotalShoulderStrengthImpairment();
-    updateTotalImpairment();
 }
 
 function updateTotalShoulderStrengthImpairment() {
@@ -101,10 +139,18 @@ function updateTotalShoulderStrengthImpairment() {
     const totalWPI = Math.round(totalUEImpairment * 0.6);
 
     document.getElementById('shoulder-strength-total-ue').textContent = `${totalUEImpairment} UE = ${totalWPI} WPI`;
+
+    updateTotalImpairment();
+}
+
+function setupShoulderArthroplasty() {
+    const arthroplastyOptions = document.querySelectorAll('input[name="shoulder-arthroplasty"]');
+    arthroplastyOptions.forEach(option => {
+        option.addEventListener('change', calculateShoulderArthroplasty);
+    });
 }
 
 function calculateShoulderArthroplasty() {
-    console.log("calculateShoulderArthroplasty function called");
     const selectedOption = document.querySelector('input[name="shoulder-arthroplasty"]:checked');
     const totalElement = document.getElementById('shoulder-arthroplasty-total');
     
@@ -119,8 +165,14 @@ function calculateShoulderArthroplasty() {
     updateTotalImpairment();
 }
 
+function setupShoulderInstability() {
+    const instabilityOptions = document.querySelectorAll('input[name="shoulder-instability"]');
+    instabilityOptions.forEach(option => {
+        option.addEventListener('change', calculateShoulderInstability);
+    });
+}
+
 function calculateShoulderInstability() {
-    console.log("calculateShoulderInstability function called");
     const selectedOption = document.querySelector('input[name="shoulder-instability"]:checked');
     const totalElement = document.getElementById('shoulder-instability-total');
     
@@ -133,6 +185,13 @@ function calculateShoulderInstability() {
     }
     
     updateTotalImpairment();
+}
+
+function setupShoulderSynovialHypertrophy() {
+    const synovialCheckboxes = document.querySelectorAll('.synovial-checkbox');
+    synovialCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', calculateShoulderSynovialHypertrophy);
+    });
 }
 
 function calculateShoulderSynovialHypertrophy(event) {
@@ -158,65 +217,14 @@ function calculateShoulderSynovialHypertrophy(event) {
     updateTotalImpairment();
 }
 
-function setupShoulderCalculators() {
-    if (selectedOptions.shoulder && selectedOptions.shoulder.includes('ROM')) {
-        const shoulderInputs = ['flexion', 'extension', 'abduction', 'adduction', 'internal-rotation', 'external-rotation', 'ankylosis-fe', 'ankylosis-aa', 'ankylosis-ie'];
-        shoulderInputs.forEach(input => {
-            const element = document.getElementById(`shoulder-${input}`);
-            if (element) {
-                element.addEventListener('input', calculateShoulderROM);
-                console.log(`Added event listener for shoulder-${input}`);
-            } else {
-                console.log(`Element not found: shoulder-${input}`);
-            }
-        });
-    }
-
-    if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Strength')) {
-        const movements = ['flexion', 'extension', 'abduction', 'adduction', 'internal-rotation', 'external-rotation'];
-        movements.forEach(movement => {
-            const deficitElement = document.getElementById(`shoulder-${movement}-strength-deficit`);
-            const impElement = document.getElementById(`shoulder-${movement}-strength-imp`);
-            if (deficitElement) {
-                deficitElement.addEventListener('input', (e) => calculateShoulderStrength(movement, 'deficit'));
-            }
-            if (impElement) {
-                impElement.addEventListener('input', (e) => calculateShoulderStrength(movement, 'imp'));
-            }
-        });
-    }
-
-    if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Arthroplasty')) {
-        console.log("Setting up arthroplasty event listeners");
-        const arthroplastyOptions = document.querySelectorAll('input[name="shoulder-arthroplasty"]');
-        console.log("Number of arthroplasty options found:", arthroplastyOptions.length);
-        arthroplastyOptions.forEach(option => {
-            option.addEventListener('change', calculateShoulderArthroplasty);
-            console.log("Added event listener to option:", option.value);
-        });
-    }
-
-    if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Instability/Subluxation/Dislocation')) {
-        const instabilityOptions = document.querySelectorAll('input[name="shoulder-instability"]');
-        instabilityOptions.forEach(option => {
-            option.addEventListener('change', calculateShoulderInstability);
-        });
-    }
-
-    if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Synovial Hypertrophy')) {
-        const synovialCheckboxes = document.querySelectorAll('.synovial-checkbox');
-        synovialCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', calculateShoulderSynovialHypertrophy);
-        });
-    }
-}
-
 function getShoulderImpairment() {
     let impairments = [];
 
     if (selectedOptions.shoulder && selectedOptions.shoulder.includes('ROM')) {
         const romImpairment = parseInt(document.getElementById('shoulder-rom-total').textContent);
-        impairments.push(romImpairment);
+        if (!isNaN(romImpairment) && romImpairment > 0) {
+            impairments.push(romImpairment);
+        }
     }
 
     if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Strength')) {
