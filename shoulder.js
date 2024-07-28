@@ -1,19 +1,18 @@
-// Revised shoulder.js
-
-function setupShoulderCalculators() {
-    if (selectedOptions.shoulder && selectedOptions.shoulder.includes('ROM')) {
+function setupShoulderCalculators(shoulderOptions) {
+    console.log("Setting up shoulder calculators with options:", shoulderOptions);
+    if (shoulderOptions.includes('ROM')) {
         setupShoulderROM();
     }
-    if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Strength')) {
+    if (shoulderOptions.includes('Strength')) {
         setupShoulderStrength();
     }
-    if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Arthroplasty')) {
+    if (shoulderOptions.includes('Arthroplasty')) {
         setupShoulderArthroplasty();
     }
-    if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Instability/Subluxation/Dislocation')) {
+    if (shoulderOptions.includes('Instability/Subluxation/Dislocation')) {
         setupShoulderInstability();
     }
-    if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Synovial Hypertrophy')) {
+    if (shoulderOptions.includes('Synovial Hypertrophy')) {
         setupShoulderSynovialHypertrophy();
     }
 }
