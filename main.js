@@ -1,7 +1,7 @@
-let updateTotalImpairment;
+let selectedOptions = {};
+
 document.addEventListener('DOMContentLoaded', (event) => {
     console.log("DOM fully loaded");
-
     const cardContainer = document.getElementById('cardContainer');
     const calculateBtn = document.getElementById('calculate');
     const resultDiv = document.getElementById('result');
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         console.log("Selected cards:", selectedCards);
         if (selectedCards.length > 0) {
             currentCardIndex = 0;
-            selectedOptions = {};
+            selectedOptions = {}; // Reset selectedOptions
             showOptionsForCard(selectedCards[currentCardIndex]);
         } else {
             resultDiv.textContent = "Please select at least one card.";
@@ -337,10 +337,13 @@ function createCalculatorContent(cardValue, option) {
 function setupCalculatorEventListeners() {
     console.log("Setting up calculator event listeners");
     if (selectedOptions.shoulder) {
-        setupShoulderCalculators();
+        setupShoulderCalculators(selectedOptions.shoulder);
     }
     // Add setup functions for other body parts as you implement them
 }
+
+    // Make sure setupShoulderCalculators is available globally
+window.setupShoulderCalculators = setupShoulderCalculators;
 
 updateTotalImpairment = function() {
     console.log("Updating total impairment");
