@@ -345,7 +345,7 @@ function setupCalculatorEventListeners() {
     // Make sure setupShoulderCalculators is available globally
 window.setupShoulderCalculators = setupShoulderCalculators;
 
-updateTotalImpairment = function() {
+function updateTotalImpairment() {
     console.log("Updating total impairment");
     const impairmentBreakdown = document.getElementById('impairment-breakdown');
     const totalImpairmentResult = document.getElementById('total-impairment-result');
@@ -355,19 +355,27 @@ updateTotalImpairment = function() {
 
     if (selectedOptions.shoulder) {
         const shoulderImpairments = getShoulderImpairment();
-        allImpairments = allImpairments.concat(shoulderImpairments);
-        breakdownHTML += `<p>Shoulder: ${shoulderImpairments.join(' + ')} UE</p>`;
+        if (shoulderImpairments.length > 0) {
+            allImpairments = allImpairments.concat(shoulderImpairments);
+            breakdownHTML += `<p>Shoulder:</p><ul>`;
+            shoulderImpairments.forEach(imp => {
+                breakdownHTML += `<li>${imp.name}: ${imp.value} UE</li>`;
+            });
+            breakdownHTML += `</ul>`;
+        }
     }
     // Add similar blocks for other body parts as you implement them
 
     if (allImpairments.length > 0) {
-        const combinedUE = combineImpairments(allImpairments);
+        const impairmentValues = allImpairments.map(imp => imp.value);
+        const combinedUE = combineImpairments(impairmentValues);
         const combinedWPI = Math.round(combinedUE * 0.6);
 
-        if (allImpairments.length > 1) {
-            breakdownHTML += `<p><strong>Combined: ${allImpairments.join(' C ')} = ${combinedUE} UE</strong></p>`;
+        if (impairmentValues.length > 1) {
+            breakdownHTML += `<p><strong>Combined: ${impairmentValues.join(' C ')} = ${combinedUE} UE</strong></p>`;
         }
         
+        breakdownHTML += `<p><strong>Total: ${combinedUE} UE = ${combinedWPI} WPI</strong></p>`;
         totalImpairmentResult.textContent = `${combinedUE} UE = ${combinedWPI} WPI`;
     } else {
         breakdownHTML = '<p>No impairments calculated yet.</p>';
@@ -375,7 +383,7 @@ updateTotalImpairment = function() {
     }
 
     impairmentBreakdown.innerHTML = breakdownHTML;
-};
+}
 
     finalizeImpairmentBtn.addEventListener('click', () => {
         console.log("Finalize Impairment button clicked");
