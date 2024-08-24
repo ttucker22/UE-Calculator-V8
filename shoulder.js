@@ -254,5 +254,18 @@ function getShoulderImpairment() {
         }
     }
 
+    // Combine impairments using CVC method
+    const impairmentValues = impairments.map(imp => imp.value);
+    const combinedUE = combineImpairments(impairmentValues);
+    const combinedWPI = Math.round(combinedUE * 0.6);
+
+    // Update the UI with the combined impairments and WPI
+    let breakdownHTML = impairments.map(imp => `<li>${imp.name}: ${imp.value} UE</li>`).join('');
+    breakdownHTML += `<p><strong>Combined: ${impairmentValues.join(' C ')} = ${combinedUE} UE</strong></p>`;
+    breakdownHTML += `<p><strong>Total: ${combinedUE} UE = ${combinedWPI} WPI</strong></p>`;
+
+    document.getElementById('impairment-breakdown').innerHTML = `<p>Shoulder:</p><ul>${breakdownHTML}</ul>`;
+    document.getElementById('total-impairment-result').textContent = `${combinedUE} UE = ${combinedWPI} WPI`;
+
     return impairments;
 }
