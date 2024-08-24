@@ -222,35 +222,35 @@ function getShoulderImpairment() {
     if (selectedOptions.shoulder && selectedOptions.shoulder.includes('ROM')) {
         const romImpairment = parseInt(document.getElementById('shoulder-rom-total').textContent);
         if (!isNaN(romImpairment) && romImpairment > 0) {
-            impairments.push(romImpairment);
+            impairments.push({ name: 'ROM', value: romImpairment });
         }
     }
 
     if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Strength')) {
         const strengthImpairment = parseInt(document.getElementById('shoulder-strength-total-ue').textContent.split(' ')[0]);
         if (!isNaN(strengthImpairment) && strengthImpairment > 0) {
-            impairments.push(strengthImpairment);
+            impairments.push({ name: 'Strength', value: strengthImpairment });
         }
     }
 
     if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Arthroplasty')) {
         const arthroplastyImpairment = parseInt(document.getElementById('shoulder-arthroplasty-total').textContent.split(' ')[0]);
         if (!isNaN(arthroplastyImpairment) && arthroplastyImpairment > 0) {
-            impairments.push(arthroplastyImpairment);
+            impairments.push({ name: 'Arthroplasty', value: arthroplastyImpairment });
         }
     }
 
     if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Instability/Subluxation/Dislocation')) {
         const instabilityImpairment = parseInt(document.getElementById('shoulder-instability-total').textContent.split(' ')[0]);
         if (!isNaN(instabilityImpairment) && instabilityImpairment > 0) {
-            impairments.push(instabilityImpairment);
+            impairments.push({ name: 'Instability', value: instabilityImpairment });
         }
     }
 
     if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Synovial Hypertrophy')) {
         const synovialImpairment = parseInt(document.getElementById('shoulder-synovial-hypertrophy-total').textContent.split(' ')[0]);
         if (!isNaN(synovialImpairment) && synovialImpairment > 0) {
-            impairments.push(synovialImpairment);
+            impairments.push({ name: 'Synovial Hypertrophy', value: synovialImpairment });
         }
     }
 
