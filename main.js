@@ -351,7 +351,6 @@ function setupCalculatorEventListeners() {
 window.setupShoulderCalculators = setupShoulderCalculators;
 
 function updateTotalImpairment() {
-    console.log("Updating total impairment");
     const impairmentBreakdown = document.getElementById('impairment-breakdown');
     const totalImpairmentResult = document.getElementById('total-impairment-result');
 
@@ -369,17 +368,13 @@ function updateTotalImpairment() {
             breakdownHTML += `</ul>`;
         }
     }
-    // Add similar blocks for other body parts as you implement them
 
     if (allImpairments.length > 0) {
         const impairmentValues = allImpairments.map(imp => imp.value);
         const combinedUE = combineImpairments(impairmentValues);
         const combinedWPI = Math.round(combinedUE * 0.6);
 
-        if (impairmentValues.length > 1) {
-            breakdownHTML += `<p><strong>Combined: ${impairmentValues.join(' C ')} = ${combinedUE} UE</strong></p>`;
-        }
-        
+        breakdownHTML += `<p><strong>Combined: ${impairmentValues.join(' C ')} = ${combinedUE} UE</strong></p>`;
         breakdownHTML += `<p><strong>Total: ${combinedUE} UE = ${combinedWPI} WPI</strong></p>`;
         totalImpairmentResult.textContent = `${combinedUE} UE = ${combinedWPI} WPI`;
     } else {
