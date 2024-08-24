@@ -125,6 +125,10 @@ function showCalculators() {
             });
         }
     }
+    
+    setupCalculatorEventListeners();
+    updateTotalImpairment();
+}
 
 function createCalculatorContent(cardValue, option) {
     if (cardValue === 'shoulder') {
