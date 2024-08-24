@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         document.addEventListener('impairmentUpdated', function() {
         updateTotalImpairment();
     });
-}); 
 
 function showOptionsForCard(cardValue) {
         console.log("Showing options for:", cardValue);
