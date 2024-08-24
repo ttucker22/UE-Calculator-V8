@@ -105,27 +105,26 @@ function showCalculators() {
     calculatorsList.innerHTML = '';
     
     for (const [cardValue, options] of Object.entries(selectedOptions)) {
-        options.forEach(option => {
-            const calculatorCard = document.createElement('div');
-            calculatorCard.classList.add('calculator-card');
-            calculatorCard.innerHTML = createCalculatorContent(cardValue, option);
-            calculatorsList.appendChild(calculatorCard);
-        });
+        if (cardValue === 'shoulder') {
+            // Create a single "Shoulder - Total Impairment" card
+            const shoulderTotalImpairmentCard = document.createElement('div');
+            shoulderTotalImpairmentCard.classList.add('calculator-card');
+            shoulderTotalImpairmentCard.id = 'shoulder-total-impairment-card';
+            shoulderTotalImpairmentCard.innerHTML = `
+                <h3>Shoulder - Total Impairment</h3>
+                <div id="impairment-breakdown"></div>
+                <p class="total-impairment"><strong>Total: <span id="total-impairment-result">0 UE = 0 WPI</span></strong></p>
+            `;
+            calculatorsList.appendChild(shoulderTotalImpairmentCard);
+        } else {
+            options.forEach(option => {
+                const calculatorCard = document.createElement('div');
+                calculatorCard.classList.add('calculator-card');
+                calculatorCard.innerHTML = createCalculatorContent(cardValue, option);
+                calculatorsList.appendChild(calculatorCard);
+            });
+        }
     }
-    
-    const totalImpairmentCard = document.createElement('div');
-    totalImpairmentCard.classList.add('calculator-card');
-    totalImpairmentCard.id = 'total-impairment-card';
-    totalImpairmentCard.innerHTML = `
-        <h3 id="total-impairment-title">Total Impairment</h3>
-        <div id="impairment-breakdown"></div>
-        <p class="total-impairment"><strong>Total: <span id="total-impairment-result">0 UE = 0 WPI</span></strong></p>
-    `;
-    calculatorsList.appendChild(totalImpairmentCard);
-    
-    setupCalculatorEventListeners();
-    updateTotalImpairment();
-}
 
 function createCalculatorContent(cardValue, option) {
     if (cardValue === 'shoulder') {
