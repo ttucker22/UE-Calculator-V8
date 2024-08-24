@@ -385,6 +385,11 @@ function updateTotalImpairment() {
     impairmentBreakdown.innerHTML = breakdownHTML;
 }
 
+// Make sure this function is called whenever an impairment is calculated or updated
+function triggerTotalImpairmentUpdate() {
+    updateTotalImpairment();
+}
+
     finalizeImpairmentBtn.addEventListener('click', () => {
         console.log("Finalize Impairment button clicked");
         // Implement finalization logic here
