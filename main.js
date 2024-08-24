@@ -365,14 +365,9 @@ function updateTotalImpairment() {
     let breakdownHTML = '';
 
     if (selectedOptions.shoulder) {
-        const shoulderImpairments = getShoulderImpairment();
+        const shoulderImpairments = getShoulderImpairment(); // Call getShoulderImpairment() here
         if (shoulderImpairments.length > 0) {
             allImpairments = allImpairments.concat(shoulderImpairments);
-            breakdownHTML += `<p>Shoulder:</p><ul>`;
-            shoulderImpairments.forEach(imp => {
-                breakdownHTML += `<li>${imp.name}: ${imp.value} UE</li>`;
-            });
-            breakdownHTML += `</ul>`;
         }
     }
 
