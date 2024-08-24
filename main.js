@@ -60,6 +60,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 document.addEventListener('impairmentUpdated', function() {
     console.log("Impairment updated event triggered");
+    // Call getShoulderImpairment() to recalculate shoulder impairment
+    if (selectedOptions.shoulder) { 
+        getShoulderImpairment(); 
+    }
     updateTotalImpairment();
 });
 
