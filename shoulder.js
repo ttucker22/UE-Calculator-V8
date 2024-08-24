@@ -89,7 +89,7 @@ function calculateShoulderROM() {
     document.getElementById('shoulder-rom-total').textContent = totalImp;
     document.getElementById('shoulder-rom-wpi').textContent = wpi;
 
-    document.dispatchEvent(new Event('impairmentUpdated'));
+    updateTotalImpairment();
 }
 
 function setupShoulderStrength() {
@@ -139,7 +139,7 @@ function updateTotalShoulderStrengthImpairment() {
 
     document.getElementById('shoulder-strength-total-ue').textContent = `${totalUEImpairment} UE = ${totalWPI} WPI`;
 
-    document.dispatchEvent(new Event('impairmentUpdated'));
+    updateTotalImpairment();
 }
 
 function setupShoulderArthroplasty() {
@@ -161,7 +161,7 @@ function calculateShoulderArthroplasty() {
         totalElement.textContent = '0 UE = 0 WPI';
     }
     
-    document.dispatchEvent(new Event('impairmentUpdated'));
+    updateTotalImpairment();
 }
 
 function setupShoulderInstability() {
@@ -183,7 +183,7 @@ function calculateShoulderInstability() {
         totalElement.textContent = '0 UE = 0 WPI';
     }
     
-    document.dispatchEvent(new Event('impairmentUpdated'));
+    updateTotalImpairment();
 }
 
 function setupShoulderSynovialHypertrophy() {
@@ -213,7 +213,7 @@ function calculateShoulderSynovialHypertrophy(event) {
     const totalWPI = Math.round(totalUEImpairment * 0.6);
     document.getElementById('shoulder-synovial-hypertrophy-total').textContent = `${totalUEImpairment} UE = ${totalWPI} WPI`;
 
-    document.dispatchEvent(new Event('impairmentUpdated'));
+    updateTotalImpairment();
 }
 
 function getShoulderImpairment() {
@@ -222,55 +222,37 @@ function getShoulderImpairment() {
     if (selectedOptions.shoulder && selectedOptions.shoulder.includes('ROM')) {
         const romImpairment = parseInt(document.getElementById('shoulder-rom-total').textContent);
         if (!isNaN(romImpairment) && romImpairment > 0) {
-            impairments.push({ name: 'ROM', value: romImpairment });
+            impairments.push(romImpairment);
         }
     }
 
     if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Strength')) {
         const strengthImpairment = parseInt(document.getElementById('shoulder-strength-total-ue').textContent.split(' ')[0]);
         if (!isNaN(strengthImpairment) && strengthImpairment > 0) {
-            impairments.push({ name: 'Strength', value: strengthImpairment });
+            impairments.push(strengthImpairment);
         }
     }
 
     if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Arthroplasty')) {
         const arthroplastyImpairment = parseInt(document.getElementById('shoulder-arthroplasty-total').textContent.split(' ')[0]);
         if (!isNaN(arthroplastyImpairment) && arthroplastyImpairment > 0) {
-            impairments.push({ name: 'Arthroplasty', value: arthroplastyImpairment });
+            impairments.push(arthroplastyImpairment);
         }
     }
 
     if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Instability/Subluxation/Dislocation')) {
         const instabilityImpairment = parseInt(document.getElementById('shoulder-instability-total').textContent.split(' ')[0]);
         if (!isNaN(instabilityImpairment) && instabilityImpairment > 0) {
-            impairments.push({ name: 'Instability', value: instabilityImpairment });
+            impairments.push(instabilityImpairment);
         }
     }
 
     if (selectedOptions.shoulder && selectedOptions.shoulder.includes('Synovial Hypertrophy')) {
         const synovialImpairment = parseInt(document.getElementById('shoulder-synovial-hypertrophy-total').textContent.split(' ')[0]);
         if (!isNaN(synovialImpairment) && synovialImpairment > 0) {
-            impairments.push({ name: 'Synovial Hypertrophy', value: synovialImpairment });
+            impairments.push(synovialImpairment);
         }
     }
-
-    console.log("Collected impairments:", impairments);
-
-    // Combine impairments using CVC method
-    const impairmentValues = impairments.map(imp => imp.value);
-    const combinedUE = combineImpairments(impairmentValues);
-    const combinedWPI = Math.round(combinedUE * 0.6);
-
-    console.log("Combined UE:", combinedUE);
-    console.log("Combined WPI:", combinedWPI);
-
-    // Update the UI with the combined impairments and WPI
-    let breakdownHTML = impairments.map(imp => `<li>${imp.name}: ${imp.value} UE</li>`).join('');
-    breakdownHTML += `<p><strong>Combined: ${impairmentValues.join(' C ')} = ${combinedUE} UE</strong></p>`;
-    breakdownHTML += `<p><strong>Total: ${combinedUE} UE = ${combinedWPI} WPI</strong></p>`;
-
-    document.getElementById('impairment-breakdown').innerHTML = `<p>Shoulder:</p><ul>${breakdownHTML}</ul>`;
-    document.getElementById('total-impairment-result').textContent = `${combinedUE} UE = ${combinedWPI} WPI`;
 
     return impairments;
 }
