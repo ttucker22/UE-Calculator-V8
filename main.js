@@ -58,6 +58,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 
+        document.addEventListener('impairmentUpdated', function() {
+        updateTotalImpairment();
+    });
+}); 
+
 function showOptionsForCard(cardValue) {
         console.log("Showing options for:", cardValue);
         currentCardTitle.textContent = `Options for ${cardValue.charAt(0).toUpperCase() + cardValue.slice(1)}`;
