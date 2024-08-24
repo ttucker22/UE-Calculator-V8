@@ -254,10 +254,15 @@ function getShoulderImpairment() {
         }
     }
 
+    console.log("Collected impairments:", impairments);
+
     // Combine impairments using CVC method
     const impairmentValues = impairments.map(imp => imp.value);
     const combinedUE = combineImpairments(impairmentValues);
     const combinedWPI = Math.round(combinedUE * 0.6);
+
+    console.log("Combined UE:", combinedUE);
+    console.log("Combined WPI:", combinedWPI);
 
     // Update the UI with the combined impairments and WPI
     let breakdownHTML = impairments.map(imp => `<li>${imp.name}: ${imp.value} UE</li>`).join('');
