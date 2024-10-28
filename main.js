@@ -345,27 +345,62 @@ function setupCalculatorEventListeners() {
     // Make sure setupShoulderCalculators is available globally
 window.setupShoulderCalculators = setupShoulderCalculators;
 
-updateTotalImpairment = function() {
-    console.log("Updating total impairment");
+function updateTotalImpairment() {
+    const selectedBodyPart = selectedCards[0].charAt(0).toUpperCase() + selectedCards[0].slice(1);
+    const totalImpairmentTitle = document.getElementById('total-impairment-title');
+    totalImpairmentTitle.textContent = `${selectedBodyPart} - Total Impairment`;
+
     const impairmentBreakdown = document.getElementById('impairment-breakdown');
     const totalImpairmentResult = document.getElementById('total-impairment-result');
 
-    let allImpairments = [];
+    let impairments = [];
     let breakdownHTML = '';
 
-    if (selectedOptions.shoulder) {
-        const shoulderImpairments = getShoulderImpairment();
-        allImpairments = allImpairments.concat(shoulderImpairments);
-        breakdownHTML += `<p>Shoulder: ${shoulderImpairments.join(' + ')} UE</p>`;
+    // Collect impairments from each calculator
+    if (selectedOptions[selectedCards[0]].includes('Synovial Hypertrophy')) {
+        const synovialImpairment = parseInt(document.getElementById('shoulder-synovial-hypertrophy-total').textContent.split(' ')[0]);
+        impairments.push(synovialImpairment);
+        breakdownHTML += `<p>Synovial Hypertrophy: ${synovialImpairment} UE</p>`;
     }
-    // Add similar blocks for other body parts as you implement them
 
-    if (allImpairments.length > 0) {
-        const combinedUE = combineImpairments(allImpairments);
+    if (selectedOptions[selectedCards[0]].includes('ROM')) {
+        const romImpairment = parseInt(document.getElementById('shoulder-rom-total').textContent);
+        impairments.push(romImpairment);
+        breakdownHTML += `<p>ROM: ${romImpairment} UE</p>`;
+    }
+
+        if (selectedOptions[selectedCards[0]].includes('Strength')) {
+        const strengthImpairment = parseInt(document.getElementById('shoulder-strength-total-ue').textContent.split(' ')[0]);
+        if (!isNaN(strengthImpairment) && strengthImpairment > 0) {
+            impairments.push(strengthImpairment);
+            breakdownHTML += `<p>Strength: ${strengthImpairment} UE</p>`;
+        }
+    }
+
+    if (selectedOptions[selectedCards[0]].includes('Arthroplasty')) {
+        const arthroplastyImpairment = parseInt(document.getElementById('shoulder-arthroplasty-total').textContent.split(' ')[0]);
+        if (!isNaN(arthroplastyImpairment) && arthroplastyImpairment > 0) {
+            impairments.push(arthroplastyImpairment);
+            breakdownHTML += `<p>Arthroplasty: ${arthroplastyImpairment} UE</p>`;
+        }
+    }
+
+    if (selectedOptions[selectedCards[0]].includes('Instability/Subluxation/Dislocation')) {
+        const instabilityImpairment = parseInt(document.getElementById('shoulder-instability-total').textContent.split(' ')[0]);
+        if (!isNaN(instabilityImpairment) && instabilityImpairment > 0) {
+            impairments.push(instabilityImpairment);
+            breakdownHTML += `<p>Instability: ${instabilityImpairment} UE</p>`;
+        }
+    }
+
+if (impairments.length > 0) {
+        const combinedUE = combineImpairments(impairments);
         const combinedWPI = Math.round(combinedUE * 0.6);
 
-        if (allImpairments.length > 1) {
-            breakdownHTML += `<p><strong>Combined: ${allImpairments.join(' C ')} = ${combinedUE} UE</strong></p>`;
+        if (impairments.length === 1) {
+            breakdownHTML += `<p><strong>Combined: ${combinedUE} UE</strong></p>`;
+        } else {
+            breakdownHTML += `<p><strong>Combined: ${impairments.join(' C ')} = ${combinedUE} UE</strong></p>`;
         }
         
         totalImpairmentResult.textContent = `${combinedUE} UE = ${combinedWPI} WPI`;
@@ -375,10 +410,24 @@ updateTotalImpairment = function() {
     }
 
     impairmentBreakdown.innerHTML = breakdownHTML;
-};
+}
 
-    finalizeImpairmentBtn.addEventListener('click', () => {
-        console.log("Finalize Impairment button clicked");
-        // Implement finalization logic here
+    const combinedUE = combineImpairments(impairments);
+    const combinedWPI = Math.round(combinedUE * 0.6);
+
+    breakdownHTML += `<p><strong>Combined: ${impairments.join(' C ')} = ${combinedUE} UE</strong></p>`;
+    impairmentBreakdown.innerHTML = breakdownHTML;
+    totalImpairmentResult.textContent = `${combinedUE} UE = ${combinedWPI} WPI`;
+});
+
+// Existing event listener
+finalizeImpairmentBtn.addEventListener('click', () => {
+    console.log("Finalize Impairment button clicked");
+    // Implement finalization logic here
+});
+        
+        finalizeImpairmentBtn.addEventListener('click', () => {
+            console.log("Finalize Impairment button clicked");
+            // Implement finalization logic here
     });
 });
